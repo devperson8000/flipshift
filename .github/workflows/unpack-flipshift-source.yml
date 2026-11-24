@@ -1,0 +1,30 @@
+name: Inspect Flipshift source archive
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/unpack-flipshift-source.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  unpack:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Unpack project archive
+        run: |
+          mkdir -p /tmp/flipshift-unpacked
+          unzip -q flipshift.zip -d /tmp/flipshift-unpacked
+          cd /tmp/flipshift-unpacked
+          zip -qr "$GITHUB_WORKSPACE/flipshift-source-inspection.zip" .
+      - name: Upload unpacked source
+        uses: actions/upload-artifact@v4
+        with:
+          name: flipshift-source-inspection
+          path: flipshift-source-inspection.zip
+          retention-days: 1
