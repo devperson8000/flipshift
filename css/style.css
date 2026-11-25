@@ -1,0 +1,13 @@
+:root{--navy:#0a1424;--teal:#19c5d6;--cyan:#6df0ff;--orange:#ff8a3d;--txt:#d8f3f7}
+*{box-sizing:border-box}html,body{margin:0;height:100%;background:#050b14;color:var(--txt);font-family:"Segoe UI",Roboto,sans-serif;overflow:hidden}
+#wrap{position:relative;width:100vw;height:100vh;display:flex;align-items:center;justify-content:center}
+canvas{width:min(100vw,calc(100vh*960/560));aspect-ratio:960/560;background:var(--navy)}
+#ui{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none}
+.panel{pointer-events:auto;background:rgba(10,20,36,.94);border:1px solid var(--teal);border-radius:10px;padding:28px 36px;min-width:340px;text-align:center;box-shadow:0 0 30px rgba(25,197,214,.15)}
+h1{margin:0 0 4px;letter-spacing:.35em;color:var(--cyan);font-size:42px}h1 b{color:var(--orange)}h2{margin:0 0 14px;letter-spacing:.2em;color:var(--cyan)}
+p.sub{margin:0 0 20px;opacity:.6;font-size:13px}
+button{display:block;width:100%;margin:8px 0;padding:11px;background:transparent;color:var(--txt);border:1px solid var(--teal);border-radius:6px;font-size:16px;letter-spacing:.1em;cursor:pointer}
+button:hover:not(:disabled){background:var(--teal);color:var(--navy)}button:disabled{opacity:.3;cursor:not-allowed}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.grid button{padding:14px 8px}.grid small{display:block;opacity:.7;font-size:12px;margin-top:4px}
+label{display:flex;justify-content:space-between;align-items:center;margin:12px 0;gap:16px}
+.ctl{font-size:12px;opacity:.6;margin-top:14px;line-height:1.6}.medal{color:var(--orange);font-size:22px;letter-spacing:.2em;margin:6px 0}
