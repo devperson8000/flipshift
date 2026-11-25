@@ -1,0 +1,39 @@
+name: Apply FLIPSHIFT artwork pack
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "flipshift-artwork.b64.part-*"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  integrate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Restore artwork into game project
+        run: |
+          cat flipshift-artwork.b64.part-* | tr -d '\n' | base64 --decode > /tmp/flipshift-artwork.zip
+          rm -rf /tmp/flipshift-project
+          mkdir -p /tmp/flipshift-project
+          unzip -q flipshift.zip -d /tmp/flipshift-project
+          test -d /tmp/flipshift-project/flipshift
+          unzip -oq /tmp/flipshift-artwork.zip -d /tmp/flipshift-project/flipshift
+          cd /tmp/flipshift-project
+          zip -qr "$GITHUB_WORKSPACE/flipshift-updated.zip" flipshift
+          mv "$GITHUB_WORKSPACE/flipshift-updated.zip" "$GITHUB_WORKSPACE/flipshift.zip"
+      - name: Commit the updated game archive
+        run: |
+          rm -f flipshift-artwork.b64.part-*
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Add generated FLIPSHIFT visual asset pack"
+          git push
