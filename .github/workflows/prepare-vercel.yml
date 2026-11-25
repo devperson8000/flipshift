@@ -1,0 +1,42 @@
+name: Prepare FLIPSHIFT for Vercel
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/prepare-vercel.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  expose-static-site:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Extract game source to repository root
+        run: |
+          set -euo pipefail
+          tmp="$(mktemp -d)"
+          unzip -q flipshift.zip -d "$tmp"
+          test -f "$tmp/flipshift/index.html"
+          test -f "$tmp/flipshift/js/game.js"
+          cp -a "$tmp/flipshift/." .
+          rm -rf "$tmp"
+          test -f index.html
+          test -d assets
+          test -d js
+      - name: Commit Vercel-ready source
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html css js assets README.md
+          if ! git diff --cached --quiet; then
+            git commit -m "Expose FLIPSHIFT game source for Vercel deployment"
+            git push
+          fi
