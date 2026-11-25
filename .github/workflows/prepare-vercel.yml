@@ -1,4 +1,5 @@
 name: Prepare FLIPSHIFT for Vercel
+run-name: Prepare static FLIPSHIFT deployment
 
 on:
   push:
